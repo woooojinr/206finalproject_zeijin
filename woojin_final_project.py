@@ -45,45 +45,43 @@ def get_fishes(cur, conn):
     response = requests.get(f"https://api.nookipedia.com/nh/fish", params=params, headers={"Accept-Version": "1.0.0", "X-API-KEY":"55812024-1e72-4393-989e-9669fe7e2c0f"})
 
     fish_lst = response.json()
-    print(fish_lst)
+    # {'name': 'Anchovy', 'url': 'https://nookipedia.com/wiki/Anchovy_(fish)', 'number': '56', 'image_url': 'https://dodo.ac/np/images/7/7f/Anchovy_%28Fish%29_NH_Icon.png', 'render_url': 'https://dodo.ac/np/images/1/19/Anchovy_%28Fish%29_NH.png', 'catchphrase': 'I caught an anchovy! Stay away from my pizza!', 'catchphrase2': '', 'catchphrase3': '', 'location': 'Sea', 'shadow_size': 'Small', 'rarity': '', 'total_catch': '0', 'sell_nook': '200', 'sell_cj': '300', 'tank_width': '1', 'tank_length': '1', 'time': '4 AM – 9 PM', 'n_availability': 'All year', 's_availability': 'All year', 'catchphrases': ['I caught an anchovy! Stay away from my pizza!'], 'availability_north': [{'months': 'All year', 'time': '4 AM – 9 PM'}], 'availability_south': [{'months': 'All year', 'time': '4 AM – 9 PM'}], 'times_by_month_north': {'1': '4 AM – 9 PM', '2': '4 AM – 9 PM', '3': '4 AM – 9 PM', '4': '4 AM – 9 PM', '5': '4 AM – 9 PM', '6': '4 AM – 9 PM', '7': '4 AM – 9 PM', '8': '4 AM – 9 PM', '9': '4 AM – 9 PM', '10': '4 AM – 9 PM', '11': '4 AM – 9 PM', '12': '4 AM – 9 PM'}, 'times_by_month_south': {'1': '4 AM – 9 PM', '2': '4 AM – 9 PM', '3': '4 AM – 9 PM', '4': '4 AM – 9 PM', '5': '4 AM – 9 PM', '6': '4 AM – 9 PM', '7': '4 AM – 9 PM', '8': '4 AM – 9 PM', '9': '4 AM – 9 PM', '10': '4 AM – 9 PM', '11': '4 AM – 9 PM', '12': '4 AM – 9 PM'}, 'n_availability_array': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], 's_availability_array': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']}
 
-    name = []
-    number = []
-    north_montharray = []
-    n_month_times = []
-    south_montharray = []
-    s_month_times = []
+    name =[]
+    location = []
+    price = []
+    rarity = []
 
     for d in fish_lst:
-        name.append(d['name'])
-        number.append(d['number'])
-        for k in (d['times_by_month_north']).keys():
-            north_montharray.append(k)
-            n_month_times.append(d['times_by_month_north'][k])
-        for k in (d['times_by_month_south']).keys():
-            south_montharray.append(k)
-            s_month_times.append(d['times_by_month_south'][k])
-    # print(north_montharray)
-    # print(n_month_times)
-        cur.execute('CREATE TABLE IF NOT EXISTS Fish (name TEXT, number TEXT, region TEXT, month TEXT, time TEXT)')
-        conn.commit()
+        print(d['name'])
+        print(d['rarity'])
+        if len(d['rarity']) == 0:
+            continue
+        elif len(d['rarity']) >= 1:
+            name.append(d['name'])
+            location.append(d['location'])
+            price.append(d['sell_nook'])
+            rarity.append(d['rarity'])
+    # print(name)
+    # print(location)
+    # print(price)
+    # print(rarity)
+    
+    #     cur.execute('CREATE TABLE IF NOT EXISTS Fish (name TEXT, number TEXT, region TEXT, month TEXT, time TEXT)')
+    #     conn.commit()
 
-    for i in range(len(name)):
-        cur.execute('INSERT INTO Fish (name, number, region, month, time) VALUES (?, ?, ?, ?, ?)', (name[i], number[i], 'north', north_montharray[i], n_month_times[i]))
-    conn.commit()
-    for i in range(len(name)):
-        cur.execute('INSERT INTO Fish (name, number, region, month, time) VALUES (?, ?, ?, ?, ?)', (name[i], number[i], 'south', south_montharray[i], s_month_times[i]))
-    conn.commit()
+    # for i in range(len(name)):
+    #     cur.execute('INSERT INTO Fish (name, number, region, month, time) VALUES (?, ?, ?, ?, ?)', (name[i], number[i], 'north', north_montharray[i], n_month_times[i]))
+    # conn.commit()
+    # for i in range(len(name)):
+    #     cur.execute('INSERT INTO Fish (name, number, region, month, time) VALUES (?, ?, ?, ?, ?)', (name[i], number[i], 'south', south_montharray[i], s_month_times[i]))
+    # conn.commit()
 
 def bugs(cur, conn):
     params = {"format": "json"}
     response = requests.get(f"https://api.nookipedia.com/nh/bugs", params=params, headers={"Accept-Version": "1.0.0", "X-API-KEY":"55812024-1e72-4393-989e-9669fe7e2c0f"})
     bug_lst = response.json()
     # print(bug_lst)
-
-def create_events_table(cur, conn, list):
-    for d in list:
-        pass
 
 
 ####################
@@ -98,7 +96,6 @@ def main():
     cur, conn = setUpDatabase('ACinfo.db')
     # link = "https://api.nookipedia.com/villagers"
     # 55812024-1e72-4393-989e-9669fe7e2c0f"
-    data = get_events(cur, conn)
     # create_events_table(data)
     get_fishes(cur, conn)
     bugs(cur, conn)

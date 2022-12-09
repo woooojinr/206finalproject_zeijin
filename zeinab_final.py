@@ -7,7 +7,7 @@ import sqlite3
 # Name: Zeinab Ghandour
 # Email: zghandou@umich.edu
 # ID: 84727401
-
+#worked with woojin kang
 
 '''API_KEY = "https://acnhapi.com/v1/"
 
@@ -149,7 +149,7 @@ def add_villager(data, cur, conn):
     
 
 def main():
-    cur, conn = setUpDatabase('villagers.db')
+    cur, conn = setUpDatabase('island.db')
     #make a loop to call first function, make the count villager id num update: not in the main 
 
     #stuff = []
@@ -163,7 +163,6 @@ def main():
     for x in range(1,101):
         stuff.append(get_data(x))
 
-    cur, conn = setUpDatabase('villagers.db')
     create_villager_table(cur, conn)
     make_gender_table(stuff, cur, conn)
     make_species_table(stuff,cur,conn)

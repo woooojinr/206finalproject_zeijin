@@ -8,7 +8,6 @@ import sqlite3
 # Email: zghandou@umich.edu
 # ID: 84727401
 
-#hello
 
 '''API_KEY = "https://acnhapi.com/v1/"
 
@@ -40,7 +39,7 @@ def get_data(villager_id):
 
 def create_villager_table(cur, conn):
      cur.execute("CREATE TABLE IF NOT EXISTS Villager (id INTEGER PRIMARY KEY, name TEXT UNIQUE,\
-        gender_id INTEGER, birthday_string STRING, species_id STRING, personality_id STRING, hobby_id STRING)")
+        gender_id INTEGER, species_id STRING, personality_id STRING, hobby_id STRING)")
     
     
 def make_gender_table(data, cur, conn):
@@ -128,7 +127,7 @@ def add_villager(data, cur, conn):
         gender_name = i["gender"]
         cur.execute("SELECT id FROM Gender WHERE gender = ?" ,(gender_name,)) 
         gender_id = int(cur.fetchone()[0])
-        birthday_string= i["birthday-string"]
+        #birthday_string= i["birthday-string"]
         species_name = i[ "species"]
         cur.execute("SELECT id FROM Species WHERE species = ?" ,(species_name,)) 
         species_id = int(cur.fetchone()[0])
@@ -139,8 +138,8 @@ def add_villager(data, cur, conn):
         cur.execute("SELECT id FROM Hobby WHERE hobby = ?" ,(hobby_name,)) 
         hobby_id = int(cur.fetchone()[0])
 
-        cur.execute("INSERT OR IGNORE INTO Villager (name, gender_id, birthday_string, species_id, personality_id, hobby_id) VALUES(?,?,?,?,?,?)",\
-            (name, gender_id, birthday_string, species_id, personality_id, hobby_id))
+        cur.execute("INSERT OR IGNORE INTO Villager (name, gender_id, species_id, personality_id, hobby_id) VALUES(?,?,?,?,?)",\
+            (name, gender_id, species_id, personality_id, hobby_id))
         #count += 1
         #if (count % 25 == 0):
             #break

@@ -8,6 +8,7 @@ import sqlite3
 # Email: zghandou@umich.edu
 # ID: 84727401
 #worked with woojin kang
+#testing 
 
 '''API_KEY = "https://acnhapi.com/v1/"
 
@@ -149,7 +150,7 @@ def add_villager(data, cur, conn):
     
 
 def main():
-    cur, conn = setUpDatabase('island.db')
+    #cur, conn = setUpDatabase('island.db')
     #make a loop to call first function, make the count villager id num update: not in the main 
 
     #stuff = []
